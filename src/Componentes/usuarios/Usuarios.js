@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { obtenerUsuarios, crearUsuario, editarUsuarioPorID, borrarUsuarioPorID } from '../../services/UsuarioService'
-import Modal from '../ui/Modal'
+import ModalUsuario from './ModalUsuario'
 
 export default function Usuarios() {
   const [usuarios, setUsuarios] = useState([])
@@ -10,6 +10,7 @@ export default function Usuarios() {
   const [error, setError] = useState(false)
   const [estado, setEstado] = useState({
     nombre: '',
+    email: '',
     estado: true
   })
   const [errorSend, setErrorSend] = useState({
@@ -46,7 +47,7 @@ export default function Usuarios() {
       const res = await crearUsuario(estado)
       console.log(res)
       setLoading(true)
-      setEstado({ nombre: '' })
+      setEstado({ nombre: '' , email: ''})
       listUsuarios()
     } catch (e) {
       const { status, data } = e.response;
@@ -119,7 +120,7 @@ export default function Usuarios() {
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title" id="exampleModal2Label">Editar Estado</h5>
+              <h5 className="modal-title" id="exampleModal2Label">Editar Usuario</h5>
               <button
                 type="button"
                 className="btn-close"
@@ -139,6 +140,15 @@ export default function Usuarios() {
                     onChange={handleChange}
                     value={estado.nombre}
                     name="nombre"
+                  />
+                  <label for="recipient-name" className="col-form-label">Email:</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="recipient-name"
+                    onChange={handleChange}
+                    value={estado.email}
+                    name="email"
                   />
                   <select
                     class="form-select"
@@ -174,8 +184,8 @@ export default function Usuarios() {
           </div>
         </div>
       </div>
-      <Modal
-        titulo={'Estado'}
+      <ModalUsuario
+        titulo={'Usuario'}
         guardar={guardarUsuarios}
         element={estado}
         change={handleChange}
